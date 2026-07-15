@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[הדגמה] ערוץ מסלול עבודה — השחזה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EAE5D6;
+    --card:#FBF9F2;
+    --ink:#22314A;
+    --ink-soft:#4C5A73;
+    --blueprint:#33547D;
+    --blueprint-line: rgba(51,84,125,0.28);
+    --green:#2E7A4C;
+    --green-bg:#E4EFE4;
+    --red:#A5382B;
+    --red-bg:#F4E4E0;
+    --amber:#B8802A;
+    --amber-bg:#F3E9D6;
+    --gold:#8A6A22;
+    --gold-bg:#F1E7CE;
+    --final-green:#0E7A5C;
+    --final-green-bg:#DCF0E6;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    background-image:
+      linear-gradient(var(--blueprint-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--blueprint-line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    color:var(--ink);
+    font-family:'Heebo',sans-serif;
+    min-height:100vh;
+    padding-bottom:60px;
+  }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  header.top{
+    background:var(--ink);
+    color:var(--paper);
+    padding:18px 24px 16px;
+    border-bottom:4px solid var(--blueprint);
+    position:sticky; top:0; z-index:20;
+  }
+  header.top .title-row{
+    display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  header.top h1{
+    font-size:20px; margin:0; font-weight:900; letter-spacing:0.3px;
+  }
+  header.top .subtitle{
+    font-size:12px; color:#B9C3D6; font-family:'IBM Plex Mono',monospace; margin-top:2px;
+  }
+  .whoami{
+    display:flex; align-items:center; gap:6px; font-size:12px; color:#CBD4E3;
+  }
+  .whoami input{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.25);
+    color:#fff; padding:5px 8px; border-radius:2px; font-family:'Heebo';
+    font-size:12px; width:110px;
+  }
+
+  nav.roles{
+    display:flex; gap:2px; margin-top:14px; flex-wrap:wrap;
+  }
+  nav.roles button{
+    background:rgba(255,255,255,0.05);
+    color:#CBD4E3;
+    border:1px solid rgba(255,255,255,0.2);
+    border-bottom:none;
+    padding:9px 14px;
+    font-family:'Heebo'; font-size:12.5px; font-weight:500;
+    cursor:pointer; border-radius:3px 3px 0 0;
+  }
+  nav.roles button.active{
+    background:var(--paper);
+    color:var(--ink);
+    font-weight:700;
+  }
+
+  main{ max-width:960px; margin:0 auto; padding:22px 18px 40px; width:100%; }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono'; font-size:11px; letter-spacing:1.5px;
+    color:var(--blueprint); text-transform:uppercase; margin-bottom:4px;
+  }
+  h2.section-title{
+    font-size:19px; margin:0 0 16px; font-weight:900; color:var(--ink);
+  }
+
+  /* ---- form card ---- */
+  .form-card{
+    background:var(--card);
+    border:1px solid var(--blueprint-line);
+    box-shadow:2px 2px 0 var(--blueprint-line);
+    padding:20px;
+    margin-bottom:22px;
+  }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:560px){ .grid2{grid-template-columns:1fr;} }
+  label{
+    display:block; font-size:11.5px; color:var(--ink-soft); margin-bottom:4px;
+    font-family:'IBM Plex Mono'; letter-spacing:0.3px;
+  }
+  input[type=text], input[type=email], textarea{
+    width:100%; border:1px solid #C9C2AC; background:#fff;
+    padding:9px 10px; font-family:'Heebo'; font-size:14px; color:var(--ink);
+    border-radius:2px;
+  }
+  input:focus, textarea:focus{ outline:2px solid var(--blueprint); outline-offset:1px; }
+  textarea{ min-height:60px; resize:vertical; }
+  .field{ margin-bottom:12px; }
+  .btn{
+    font-family:'Heebo'; font-weight:700; font-size:13.5px;
+    border:none; padding:11px 20px; cursor:pointer; border-radius:2px;
+    transition:transform .08s ease;
+  }
+  .btn:active{ transform:scale(0.97); }
+  .btn-primary{ background:var(--blueprint); color:#fff; }
+  .btn-primary:hover{ background:#2A4463; }
+  .btn-ghost{ background:transparent; border:1px solid var(--ink-soft); color:var(--ink); }
+  .btn-green{ background:var(--green); color:#fff; }
+  .btn-red{ background:var(--red); color:#fff; }
+  .btn-gold{ background:var(--gold); color:#fff; }
+  .btn-small{ padding:6px 12px; font-size:12px; }
+  .btn:disabled{ opacity:0.4; cursor:not-allowed; }
+
+  /* ---- contacts panel ---- */
+  .contacts-panel{
+    background:var(--card); border:1px dashed var(--blueprint-line);
+    padding:14px 16px; margin-bottom:22px;
+  }
+  .contacts-panel summary{
+    cursor:pointer; font-family:'IBM Plex Mono'; font-size:12px; color:var(--blueprint);
+    font-weight:600; letter-spacing:0.3px; outline:none;
+  }
+  .contacts-list{ display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+  .contact-chip{
+    background:#fff; border:1px solid var(--blueprint-line); border-radius:14px;
+    padding:5px 10px 5px 6px; font-size:12.5px; display:flex; align-items:center; gap:6px;
+  }
+  .contact-chip .x{
+    cursor:pointer; color:var(--red); font-weight:700; font-size:13px;
+    width:18px; height:18px; display:flex; align-items:center; justify-content:center;
+    border-radius:50%; background:var(--red-bg);
+  }
+  .contact-add-row{ display:flex; gap:8px; flex-wrap:wrap; }
+  .contact-add-row input{ flex:1 1 160px; }
+  .no-contacts{ font-size:12.5px; color:var(--ink-soft); }
+
+  /* ---- traveler cards ---- */
+  .card-list{ display:flex; flex-direction:column; gap:14px; }
+  .traveler{
+    background:var(--card);
+    border:1px solid var(--blueprint-line);
+    position:relative;
+    box-shadow:3px 3px 0 var(--blueprint-line);
+  }
+  .traveler::before{
+    content:""; position:absolute; right:0; top:0; bottom:0; width:6px;
+    background:repeating-linear-gradient(180deg, var(--blueprint) 0 6px, transparent 6px 12px);
+    opacity:0.5;
+  }
+  .traveler-head{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    padding:14px 18px 12px 14px; cursor:pointer; gap:10px; flex-wrap:wrap;
+  }
+  .traveler-head .idline{
+    font-family:'IBM Plex Mono'; font-size:12px; color:var(--blueprint); font-weight:600;
+  }
+  .traveler-head .machine{
+    font-family:'IBM Plex Mono'; font-size:11px; color:var(--ink-soft); margin-top:2px;
+  }
+  .traveler-head .meta{ font-size:11.5px; color:var(--ink-soft); margin-top:2px; }
+
+  .stamps{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+  .stamp{
+    width:38px; height:38px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono'; font-size:9px; font-weight:700;
+    border:2px dashed #B9B29A; color:#B9B29A; text-align:center; line-height:1.1;
+    transform:rotate(-6deg);
+    background:transparent;
+  }
+  .stamp.approved{ border-style:solid; border-color:var(--green); color:var(--green); background:var(--green-bg); }
+  .stamp.issue{ border-style:solid; border-color:var(--red); color:var(--red); background:var(--red-bg); transform:rotate(5deg); }
+  .stamp.final{ border-radius:5px; transform:rotate(-3deg); width:44px; }
+  .stamp.final.approved{ border-color:var(--final-green); color:var(--final-green); background:var(--final-green-bg); }
+
+  .overall-tag{
+    font-family:'IBM Plex Mono'; font-size:11px; padding:3px 9px; border-radius:2px;
+    font-weight:600; letter-spacing:0.3px; white-space:nowrap; height:fit-content;
+  }
+  .overall-tag.finalized{ background:var(--final-green-bg); color:var(--final-green); }
+  .overall-tag.ready-final{ background:var(--amber-bg); color:var(--amber); }
+  .overall-tag.issue{ background:var(--red-bg); color:var(--red); }
+  .overall-tag.pending{ background:var(--amber-bg); color:var(--amber); }
+
+  .traveler-body{
+    border-top:1px dashed #C9C2AC; padding:16px 18px; display:none;
+  }
+  .traveler-body.open{ display:block; }
+
+  .planner-note{
+    background:#F1EDE0; border-right:3px solid var(--blueprint); padding:10px 12px;
+    font-size:13px; color:var(--ink-soft); margin-bottom:14px; white-space:pre-wrap;
+  }
+
+  .role-block{
+    border:1px solid var(--blueprint-line); padding:12px 14px; margin-bottom:10px; background:#fff;
+  }
+  .role-block.final-block{ border-color:var(--gold); background:#FFFDF7; }
+  .role-block h4{
+    margin:0 0 8px; font-size:13px; font-family:'IBM Plex Mono'; color:var(--blueprint);
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;
+  }
+  .role-block.final-block h4{ color:var(--gold); }
+  .check-row{
+    display:flex; align-items:flex-start; gap:8px; font-size:13.5px; margin-bottom:7px; color:var(--ink);
+  }
+  .check-row input{ margin-top:3px; accent-color:var(--blueprint); }
+  .role-actions{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; align-items:center; }
+  .role-log{ font-size:11.5px; color:var(--ink-soft); margin-top:8px; font-family:'IBM Plex Mono'; }
+  .issue-note{ font-size:12.5px; color:var(--red); margin-top:6px; }
+  .final-gate-note{ font-size:12.5px; color:var(--ink-soft); margin-top:6px; }
+  .final-summary{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+  .final-summary .item{ font-size:12px; font-family:'IBM Plex Mono'; display:flex; align-items:center; gap:5px; }
+  .dot{ width:9px; height:9px; border-radius:50%; display:inline-block; }
+  .dot.approved{ background:var(--green); }
+  .dot.issue{ background:var(--red); }
+  .dot.pending{ background:var(--amber); }
+
+  .empty{ text-align:center; padding:50px 20px; color:var(--ink-soft); }
+  .empty .big{ font-size:30px; margin-bottom:10px; }
+
+  .toast{
+    position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+    background:var(--ink); color:#fff; padding:10px 20px; border-radius:3px;
+    font-size:13px; font-family:'Heebo'; z-index:99; opacity:0; transition:opacity .25s;
+    pointer-events:none; text-align:center; max-width:90%;
+  }
+  .toast.show{ opacity:1; }
+  .loading{ text-align:center; padding:30px; color:var(--ink-soft); font-family:'IBM Plex Mono'; font-size:12px; }
+
+  /* ---- notifications ---- */
+  .bell-btn{
+    position:relative; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.25);
+    color:#fff; border-radius:4px; padding:5px 9px; font-size:14px; cursor:pointer; line-height:1;
+  }
+  .bell-btn:hover{ background:rgba(255,255,255,0.16); }
+  .notif-count{
+    position:absolute; top:-6px; left:-6px; background:var(--red); color:#fff;
+    font-family:'IBM Plex Mono'; font-size:10px; font-weight:700; border-radius:50%;
+    min-width:16px; height:16px; display:flex; align-items:center; justify-content:center; padding:0 2px;
+  }
+  .notif-overlay{
+    display:none; position:fixed; inset:0; background:rgba(20,26,38,0.45); z-index:200;
+  }
+  .notif-overlay.open{ display:block; }
+  .notif-panel{
+    position:fixed; top:0; right:-340px; width:320px; max-width:85vw; height:100%;
+    background:var(--card); border-left:1px solid var(--blueprint-line);
+    box-shadow:-6px 0 24px rgba(0,0,0,0.25); z-index:201; transition:right .22s ease;
+    display:flex; flex-direction:column;
+  }
+  .notif-panel.open{ right:0; }
+  .notif-panel-head{
+    background:var(--ink); color:#fff; padding:12px 14px; font-weight:700; font-size:16px;
+    display:flex; justify-content:space-between; align-items:center; flex-shrink:0;
+  }
+  .notif-close{ cursor:pointer; font-size:20px; opacity:0.8; }
+  .notif-close:hover{ opacity:1; }
+  .notif-list{ overflow-y:auto; padding:8px 10px; flex:1; }
+  .notif-item{
+    border-bottom:1px dashed #C9C2AC; padding:9px 4px; font-size:15px; color:var(--ink); line-height:1.4;
+  }
+  .notif-item .role{ font-family:'IBM Plex Mono'; font-size:14px; color:var(--blueprint); font-weight:700; }
+  .notif-item .detail{ margin-top:3px; font-size:15px; }
+  .notif-item .when{ margin-top:3px; font-size:13px; color:var(--ink-soft); font-family:'IBM Plex Mono'; }
+  .notif-empty{ text-align:center; color:var(--ink-soft); font-size:14px; padding:24px 10px; }
+
+  /* ---- shelf map (premium) ---- */
+  .map-legend{ display:flex; gap:20px; flex-wrap:wrap; margin-bottom:22px; font-size:12.5px; color:var(--ink-soft); }
+  .legend-item{ display:flex; align-items:center; gap:7px; }
+  .dot-legend{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .dot-legend.red{ width:8px; height:8px; background:#E5352B; box-shadow:0 0 4px rgba(229,53,43,0.55); }
+  .dot-legend.orange{ background:#FBC02D; box-shadow:0 0 6px rgba(251,192,45,0.8); }
+  .dot-legend.green{ background:#43A047; box-shadow:0 0 6px rgba(67,160,71,0.8); }
+
+  .shelf-map{ display:flex; gap:48px; flex-wrap:wrap; justify-content:center; margin-bottom:8px; }
+  .shelf-area{
+    background: radial-gradient(ellipse at top, #223354 0%, #18223A 70%);
+    border:1px solid #3E5A86;
+    border-radius:8px;
+    padding:24px 28px 28px;
+    box-shadow: 0 14px 36px rgba(10,16,30,0.4), inset 0 0 0 1px rgba(255,255,255,0.04);
+  }
+  .shelf-area-title{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    color:#DEBF74;
+    text-align:center;
+    margin-bottom:20px;
+    padding-bottom:12px;
+    border-bottom:1px solid rgba(222,191,116,0.35);
+  }
+  .shelf-grid{ display:grid; grid-template-columns:repeat(3, 76px); gap:13px; }
+  .shelf-cell{
+    background:linear-gradient(160deg, #2A3C60, #22314F);
+    border:1px solid #435E8C;
+    border-radius:6px;
+    padding:11px 6px 9px;
+    text-align:center;
+    cursor:pointer;
+    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  }
+  .shelf-cell:hover{ transform:translateY(-2px); border-color:#DEBF74; box-shadow:0 8px 16px rgba(0,0,0,0.35); }
+  .shelf-cell.selected{ border-color:#DEBF74; background:linear-gradient(160deg, #38507E, #2C4066); box-shadow:0 0 0 2px rgba(222,191,116,0.45); }
+  .shelf-cell.empty-slot{ visibility:hidden; }
+  .shelf-cell-number{ font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:700; color:#F3ECDC; margin-bottom:9px; }
+  .shelf-cell-dots{ display:flex; justify-content:center; align-items:center; gap:7px; }
+  .shelf-cell .dot{ border-radius:50%; display:inline-block; }
+  .shelf-cell .dot.vacant{ width:8px; height:8px; background:#E5352B; box-shadow:0 0 4px rgba(229,53,43,0.55); align-self:center; }
+  .shelf-cell .dot.orange{ width:14px; height:14px; background:#FBC02D; box-shadow:0 0 9px rgba(251,192,45,0.95); }
+  .shelf-cell .dot.green{ width:14px; height:14px; background:#43A047; box-shadow:0 0 9px rgba(67,160,71,0.95); }
+
+  /* ---- responsive ---- */
+  @media (max-width:640px){
+    header.top{ padding:14px 14px 12px; }
+    header.top h1{ font-size:16.5px; line-height:1.3; }
+    header.top .subtitle{ font-size:10.5px; }
+    .shelf-map{ gap:18px; }
+    .shelf-area{ padding:16px 14px 18px; }
+    .shelf-grid{ grid-template-columns:repeat(3, 64px); gap:9px; }
+    .shelf-cell{ padding:8px 4px 7px; }
+    .shelf-cell-number{ font-size:15px; margin-bottom:6px; }
+    .shelf-cell .dot.vacant{ width:7px; height:7px; }
+    .shelf-cell .dot.orange, .shelf-cell .dot.green{ width:12px; height:12px; }
+    .shelf-area-title{ font-size:12px; letter-spacing:2px; }
+    .title-row{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .whoami{ width:100%; }
+    .whoami input{ flex:1; width:auto; }
+
+    nav.roles{ margin-top:12px; gap:2px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:2px; }
+    nav.roles button{ flex:0 0 auto; padding:9px 11px; font-size:11.5px; white-space:nowrap; }
+
+    main{ padding:16px 12px 32px; }
+    .form-card, .contacts-panel{ padding:14px; }
+    h2.section-title{ font-size:16.5px; }
+    .eyebrow{ font-size:10px; }
+
+    .traveler-head{ padding:12px 14px 10px 10px; }
+    .traveler-head .idline{ font-size:11px; }
+    .traveler-head .meta{ font-size:10.5px; }
+    .traveler-body{ padding:13px 14px; }
+
+    .stamps{ gap:5px; }
+    .stamp{ width:32px; height:32px; font-size:8px; }
+    .stamp.final{ width:38px; }
+
+    .role-block{ padding:11px 12px; }
+    .check-row{ font-size:13px; }
+    .check-row input{ width:18px; height:18px; }
+
+    .btn{ padding:11px 16px; font-size:13px; }
+    .role-actions{ gap:6px; }
+    .role-actions .btn{ flex:1 1 auto; text-align:center; }
+    .overall-tag{ font-size:10px; }
+  }
+  @media (max-width:400px){
+    header.top h1{ font-size:15px; }
+    .traveler-head{ flex-direction:column; align-items:stretch; }
+    .traveler-head > div:last-child{ flex-direction:row; align-items:center; justify-content:space-between; }
+  }
+  @media (pointer:coarse){
+    nav.roles button{ min-height:40px; }
+    .btn{ min-height:42px; }
+    input[type=text], input[type=email], textarea{ font-size:16px; }
+  }
+</style>
+</head>
+<body>
+<div style="background:#B8442B; color:#fff; text-align:center; padding:7px 10px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; font-weight:600; letter-spacing:0.5px; position:sticky; top:0; z-index:500;">⚠ סביבת הדגמה בלבד — הנתונים כאן נפרדים לחלוטין ממערכת הייצור האמיתית, וניתן ללחוץ על הכל בחופשיות</div>
+
+<header class="top">
+  <div class="title-row">
+    <div>
+      <h1>ערוץ מסלול עבודה — השחזה בייצור</h1>
+      <div class="subtitle">MFG-ROUTE // קדם ייצור ↔ טכנולוגים ↔ קטלוג ↔ מנהל מחלקה</div>
+    </div>
+    <div class="whoami">
+      <span>שם:</span>
+      <input type="text" id="myNameInput" placeholder="הקלד/י שם">
+      <button id="notifBell" class="bell-btn" title="התראות">
+        🔔<span id="notifCount" class="notif-count" style="display:none;">0</span>
+      </button>
+    </div>
+  </div>
+  <nav class="roles" id="rolesNav">
+    <button data-role="map" class="active">מפת מדפים</button>
+    <button data-role="prep">קדם ייצור</button>
+    <button data-role="grinding">טכנולוג השחזה</button>
+    <button data-role="measurement">טכנולוג מדידה</button>
+    <button data-role="catalog">קטלוג מנטי</button>
+    <button data-role="final">מנהל מחלקה</button>
+  </nav>
+</header>
+
+<div id="notifPanel" class="notif-panel">
+  <div class="notif-panel-head">
+    <span>התראות אחרונות</span>
+    <span id="notifClose" class="notif-close">✕</span>
+  </div>
+  <div id="notifList" class="notif-list"></div>
+</div>
+<div id="notifOverlay" class="notif-overlay"></div>
+
+<main id="mainArea">
+  <div class="loading">טוען נתונים…</div>
+</main>
+
+<div class="toast" id="toast"></div>
+<div id="syncStatus" style="position:fixed; bottom:0; left:0; right:0; background:var(--ink); color:#9fb0c9; font-family:'IBM Plex Mono',monospace; font-size:10px; padding:4px 10px; text-align:center; z-index:999; opacity:0.9;">מתחבר לסנכרון…</div>
+
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAyW4XEgbz1_J4MTuc-E3julmzSytnYDLE",
+  authDomain: "zurim-routing.firebaseapp.com",
+  projectId: "zurim-routing",
+  storageBucket: "zurim-routing.firebasestorage.app",
+  messagingSenderId: "758458334968",
+  appId: "1:758458334968:web:e7e02d9b799f36ff1c450d"
+};
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const db = firebaseApp.firestore();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+const EMAILJS_SERVICE_ID = 'service_7poi78i';
+const EMAILJS_TEMPLATE_ID = 'template_4bdlub1';
+const EMAILJS_PUBLIC_KEY = 'rg2FN6wu3xWm9gX4K';
+const SITE_URL = 'https://zurimtools.github.io/routing-channel/';
+if(window.emailjs){
+  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+}
+
+const ROLE_LABELS = {
+  prep: 'קדם ייצור',
+  grinding: 'טכנולוג השחזה',
+  measurement: 'טכנולוג מדידה',
+  catalog: 'קטלוג מנטי',
+  final: 'מנהל מחלקה'
+};
+
+const ROLE_CHECKS = {
+  prep: [
+    {key:'rawMaterial', text:'גלם מונח וספור על המדף'},
+    {key:'fixture', text:'תופסנית מונחת על המדף'},
+    {key:'wheels', text:'אופנים מונחים על המדף'},
+    {key:'vtpTrays', text:'מגשי VTP מונחים על המדף'},
+  ],
+  grinding: [
+    {key:'wheelsOk', text:'קיימים אופנים תקינים בהתאם לשרטוט, ומתאימים לכלי'},
+    {key:'ncMatch', text:'התוכנית מותאמת לגרסת ה־NC העדכנית'},
+    {key:'planExists', text:'קיימת תוכנית השחזה להוראה זו'},
+  ],
+  measurement: [
+    {key:'planExists', text:'קיימת תוכנית מדידה עבור הוראה זו'},
+    {key:'planValid', text:'תוכנית המדידה תקינה'},
+    {key:'sopManti', text:'SOP במנטי'},
+    {key:'idNumberMatch', text:'ID NUMBER תואם למנטי'},
+  ],
+  catalog: [
+    {key:'catalogOk', text:'הקטלוג (מנטי) תקין ותואם להוראה'},
+    {key:'sampleFormulaOk', text:'וידוא תקינות נוסחת מדגם'},
+    {key:'keyDimensionsOk', text:'וידוא תקינות של מידות מפתח'},
+  ]
+};
+const SUB_ROLE_ORDER = ['prep','grinding','measurement','catalog'];
+
+const SHELF_MAP = [
+  { key:'areaA', title:'אזור A', cells: [
+      [23,22,21],
+      [33,32,31],
+      [42,51,34],
+      [41,43,null],
+      [13,12,11]
+    ] },
+  { key:'areaB', title:'אזור B', cells: [
+      [62,63,64],
+      [61,84,74],
+      [54,83,73],
+      [53,82,72],
+      [52,81,71]
+    ] }
+];
+
+let state = {
+  currentRole: 'map',
+  instructions: [],
+  contacts: [],
+  myName: '',
+  openId: null,
+  selectedMachine: null,
+  notifOpen: false,
+  loaded: false
+};
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), 2600);
+}
+
+function freshRoleState(){
+  return { status:'pending', by:'', at:'', comment:'', checks:{} };
+}
+
+function newInstructionSkeleton(data){
+  return {
+    id: 'ins_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+    orderNumber: data.orderNumber,
+    machineNumber: data.machineNumber,
+    machineStartTime: data.machineStartTime,
+    machineStartDate: data.machineStartDate,
+    plannerNote: data.plannerNote,
+    createdBy: data.createdBy,
+    createdAt: new Date().toISOString(),
+    emailDraft: null,
+    shelfStatus: 'active',
+    vacatedBy: '',
+    vacatedAt: '',
+    prep: freshRoleState(),
+    grinding: freshRoleState(),
+    measurement: freshRoleState(),
+    catalog: freshRoleState(),
+    final: { status:'pending', by:'', at:'', comment:'' }
+  };
+}
+
+function overallStatus(ins){
+  const subs = SUB_ROLE_ORDER.map(r => ins[r].status);
+  if(subs.includes('issue') || ins.final.status === 'issue') return 'issue';
+  if(ins.final.status === 'approved') return 'finalized';
+  if(subs.every(s => s === 'approved')) return 'ready-final';
+  return 'pending';
+}
+function overallLabel(s){
+  if(s === 'finalized') return 'אושר סופית ע"י מנהל המחלקה';
+  if(s === 'ready-final') return 'ממתין לאישור סופי';
+  if(s === 'issue') return 'נמצאה בעיה';
+  return 'בתהליך בדיקה';
+}
+
+function activeInstructionsForMachine(machineNumber){
+  const key = String(machineNumber).trim();
+  return state.instructions
+    .filter(i => i.shelfStatus !== 'vacated' && String(i.machineNumber).trim() === key)
+    .sort((a,b)=> new Date(a.createdAt) - new Date(b.createdAt));
+}
+function slotColorForInstruction(ins){
+  if(!ins) return 'vacant';
+  return ins.final.status === 'approved' ? 'green' : 'orange';
+}
+function machineSlotStatuses(machineNumber){
+  const active = activeInstructionsForMachine(machineNumber);
+  return [0,1].map(i => ({ ins: active[i] || null, color: slotColorForInstruction(active[i]) }));
+}
+
+const INSTRUCTIONS_DOC = db.collection('routingAppDemo').doc('instructions');
+const CONTACTS_DOC = db.collection('routingAppDemo').doc('contacts');
+
+function setSyncStatus(text, ok){
+  const el = document.getElementById('syncStatus');
+  if(el){
+    el.textContent = text;
+    el.style.color = ok ? '#8fd39a' : '#e3a06a';
+  }
+}
+
+function loadData(){
+  state.myName = localStorage.getItem('routing-my-name') || '';
+  document.getElementById('myNameInput').value = state.myName;
+
+  INSTRUCTIONS_DOC.onSnapshot((doc)=>{
+    try{
+      const data = doc.exists ? doc.data() : null;
+      state.instructions = data && data.json ? JSON.parse(data.json) : [];
+    }catch(e){ state.instructions = []; }
+    state.loaded = true;
+    setSyncStatus('מסונכרן ✓ · עודכן ' + new Date().toLocaleTimeString('he-IL'), true);
+    render();
+  }, (err)=>{
+    console.error('Firestore instructions listener error:', err);
+    state.loaded = true;
+    setSyncStatus('שגיאת סנכרון: ' + (err && err.message ? err.message : err), false);
+    render();
+  });
+
+  CONTACTS_DOC.onSnapshot((doc)=>{
+    try{
+      const data = doc.exists ? doc.data() : null;
+      state.contacts = data && data.json ? JSON.parse(data.json) : [];
+    }catch(e){ state.contacts = []; }
+    if(state.loaded) render();
+  }, (err)=>{
+    console.error('Firestore contacts listener error:', err);
+  });
+}
+
+async function saveInstructions(){
+  try{
+    await INSTRUCTIONS_DOC.set({ json: JSON.stringify(state.instructions), updatedAt: new Date().toISOString() });
+  }catch(e){
+    console.error('Save instructions failed:', e);
+    toast('שגיאה בשמירה — נסה/י שוב');
+  }
+}
+async function saveContacts(){
+  try{
+    await CONTACTS_DOC.set({ json: JSON.stringify(state.contacts), updatedAt: new Date().toISOString() });
+  }catch(e){
+    console.error('Save contacts failed:', e);
+    toast('שגיאה בשמירת אנשי הקשר');
+  }
+}
+function saveName(name){
+  state.myName = name;
+  try{ localStorage.setItem('routing-my-name', name); }catch(e){}
+}
+
+document.getElementById('myNameInput').addEventListener('change', (e)=> saveName(e.target.value.trim()));
+
+document.getElementById('rolesNav').addEventListener('click', (e)=>{
+  const btn = e.target.closest('button[data-role]');
+  if(!btn) return;
+  state.currentRole = btn.dataset.role;
+  state.openId = null;
+  document.querySelectorAll('nav.roles button').forEach(b=>b.classList.toggle('active', b===btn));
+  render();
+});
+
+function buildActivityFeed(){
+  const events = [];
+  const rolesToCheck = [...SUB_ROLE_ORDER, 'final'];
+  state.instructions.forEach(ins => {
+    if(ins.createdAt){
+      events.push({
+        type: 'created',
+        label: 'הוראה נוספה',
+        orderNumber: ins.orderNumber,
+        machineNumber: ins.machineNumber,
+        by: ins.createdBy || '—',
+        at: ins.createdAt
+      });
+    }
+    rolesToCheck.forEach(roleKey => {
+      const rs = ins[roleKey];
+      if(rs && rs.status === 'approved' && rs.at){
+        events.push({
+          type: 'approved',
+          label: ROLE_LABELS[roleKey],
+          orderNumber: ins.orderNumber,
+          machineNumber: ins.machineNumber,
+          by: rs.by || '—',
+          at: rs.at
+        });
+      }
+    });
+  });
+  events.sort((a,b)=> new Date(b.at) - new Date(a.at));
+  return events.slice(0, 40);
+}
+
+function renderNotifPanel(){
+  const listEl = document.getElementById('notifList');
+  const countEl = document.getElementById('notifCount');
+  if(!listEl || !countEl) return;
+  const events = buildActivityFeed();
+
+  countEl.textContent = events.length > 9 ? '9+' : String(events.length);
+  countEl.style.display = events.length > 0 ? 'flex' : 'none';
+
+  listEl.innerHTML = events.length === 0
+    ? `<div class="notif-empty">אין עדיין פעילות רשומה</div>`
+    : events.map(ev => `
+      <div class="notif-item">
+        <div class="role">${ev.type === 'created' ? '➕ ' + ev.label : '✓ ' + ev.label + ' אישר/ה'}</div>
+        <div class="detail">הוראה ${escapeHtml(String(ev.orderNumber))} · מכונה ${escapeHtml(String(ev.machineNumber))}</div>
+        <div class="when">${ev.by} · ${fmtDate(ev.at)}</div>
+      </div>`).join('');
+
+  document.getElementById('notifPanel').classList.toggle('open', state.notifOpen);
+  document.getElementById('notifOverlay').classList.toggle('open', state.notifOpen);
+}
+
+function attachNotifHandlers(){
+  const bell = document.getElementById('notifBell');
+  const closeBtn = document.getElementById('notifClose');
+  const overlay = document.getElementById('notifOverlay');
+  if(bell) bell.onclick = ()=>{ state.notifOpen = !state.notifOpen; renderNotifPanel(); };
+  if(closeBtn) closeBtn.onclick = ()=>{ state.notifOpen = false; renderNotifPanel(); };
+  if(overlay) overlay.onclick = ()=>{ state.notifOpen = false; renderNotifPanel(); };
+}
+
+function render(){
+  const main = document.getElementById('mainArea');
+  if(!state.loaded){ main.innerHTML = '<div class="loading">טוען נתונים…</div>'; return; }
+  renderNotifPanel();
+
+  if(state.currentRole === 'map'){
+    main.innerHTML = renderMapView();
+    attachMapHandlers();
+    attachCardToggles();
+    attachDraftHandlers();
+    return;
+  }
+
+  if(state.currentRole === 'final'){
+    main.innerHTML = renderFinalRole();
+  } else {
+    main.innerHTML = renderTechRole(state.currentRole);
+  }
+  attachCardToggles();
+  attachDraftHandlers();
+  attachTechHandlers(state.currentRole);
+  if(state.currentRole === 'prep'){
+    attachPrepFormHandlers();
+    attachContactsHandlers();
+  }
+  if(state.currentRole === 'final'){
+    attachFinalHandlers();
+  }
+}
+
+function fmtDate(iso){
+  const d = new Date(iso);
+  return d.toLocaleDateString('he-IL') + ' ' + d.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'});
+}
+
+function stampClass(roleState, isFinal){
+  let c = isFinal ? 'stamp final' : 'stamp';
+  if(roleState.status === 'approved') c += ' approved';
+  if(roleState.status === 'issue') c += ' issue';
+  return c;
+}
+function stampText(roleKey, roleState){
+  const initials = {prep:'קד"י', grinding:'השחזה', measurement:'מדידה', catalog:'קטלוג', final:'מנהל'};
+  if(roleState.status === 'approved') return initials[roleKey] + '\n✓';
+  if(roleState.status === 'issue') return initials[roleKey] + '\n!';
+  return initials[roleKey];
+}
+
+/* ---------------- contacts panel ---------------- */
+function renderContactsPanel(){
+  const chips = state.contacts.length
+    ? state.contacts.map((c,i)=>`
+      <div class="contact-chip">
+        <span>${escapeHtml(c.name || c.email)} ${c.name ? '&lt;' + escapeHtml(c.email) + '&gt;' : ''}</span>
+        <span class="x" data-remove-contact="${i}">✕</span>
+      </div>`).join('')
+    : `<div class="no-contacts">עדיין לא הוגדרו אנשי קשר. הוסף/י כתובת מייל כדי שהודעות יישלחו אליה בעת רישום הוראה.</div>`;
+
+  return `
+  <details class="contacts-panel" id="contactsDetails">
+    <summary>אנשי קשר לדיוור במייל (${state.contacts.length})</summary>
+    <div class="contacts-list">${chips}</div>
+    <div class="contact-add-row">
+      <input type="text" id="contactName" placeholder="שם (אופציונלי)">
+      <input type="email" id="contactEmail" placeholder="כתובת מייל">
+      <button class="btn btn-primary btn-small" id="addContactBtn">הוסף איש קשר</button>
+    </div>
+  </details>`;
+}
+
+function attachContactsHandlers(){
+  const addBtn = document.getElementById('addContactBtn');
+  if(addBtn){
+    addBtn.addEventListener('click', async ()=>{
+      const nameEl = document.getElementById('contactName');
+      const emailEl = document.getElementById('contactEmail');
+      const email = emailEl.value.trim();
+      if(!email || !email.includes('@')){ toast('נא להזין כתובת מייל תקינה'); return; }
+      state.contacts.push({ name: nameEl.value.trim(), email });
+      await saveContacts();
+      toast('איש הקשר נוסף');
+      render();
+      const det = document.getElementById('contactsDetails');
+      if(det) det.open = true;
+    });
+  }
+  document.querySelectorAll('[data-remove-contact]').forEach(el=>{
+    el.addEventListener('click', async ()=>{
+      const idx = parseInt(el.dataset.removeContact, 10);
+      state.contacts.splice(idx,1);
+      await saveContacts();
+      render();
+      const det = document.getElementById('contactsDetails');
+      if(det) det.open = true;
+    });
+  });
+}
+
+/* ---------------- email (mailto) ---------------- */
+function buildEmailDraft(ins){
+  const to = state.contacts.map(c=>c.email).join(', ');
+  const subject = 'הוראת עבודה חדשה - ' + ins.orderNumber + ' | מכונה ' + ins.machineNumber;
+  const body = [
+    'מספר הוראה: ' + ins.orderNumber,
+    'מספר מכונה (הונח על המדף): ' + ins.machineNumber,
+    ins.machineStartDate ? ('תאריך עלייה למכונה: ' + ins.machineStartDate) : '',
+    ins.machineStartTime ? ('שעת עלייה למכונה: ' + ins.machineStartTime) : '',
+    ins.plannerNote ? ('הערה: ' + ins.plannerNote) : '',
+    'נרשם ע"י: ' + (ins.createdBy || '—'),
+    'תאריך: ' + fmtDate(ins.createdAt),
+    'לצפייה במערכת: ' + SITE_URL
+  ].filter(Boolean).join('\n');
+  return { to, subject, body };
+}
+
+async function sendRegistrationEmail(ins){
+  // DEMO MODE: real email sending is disabled so demo clicks never reach real inboxes.
+  toast('מצב הדגמה: המייל לא נשלח בפועל (בסביבת הייצור האמיתית זה היה נשלח אוטומטית לאנשי הקשר) ✓');
+  return;
+  if(state.contacts.length === 0){
+    toast('ההוראה נרשמה. שימו לב: לא הוגדרו אנשי קשר לדיוור, לא נשלח מייל');
+    return;
+  }
+  if(!window.emailjs){
+    toast('שירות השליחה האוטומטית לא נטען כרגע — ניתן להעתיק את הטיוטה השמורה ולשלוח ידנית');
+    return;
+  }
+  const draft = ins.emailDraft;
+  try{
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      order_number: ins.orderNumber,
+      machine_number: ins.machineNumber,
+      machine_start_date: ins.machineStartDate || '',
+      machine_start_time: ins.machineStartTime || '',
+      note: ins.plannerNote || '',
+      created_by: ins.createdBy || '',
+      created_at: fmtDate(ins.createdAt),
+      to_email: draft.to,
+      site_url: SITE_URL
+    }, { publicKey: EMAILJS_PUBLIC_KEY });
+    toast('המייל נשלח אוטומטית לאנשי הקשר ✓');
+  }catch(err){
+    let detail = '';
+    try{
+      if(err && typeof err === 'object'){
+        detail = [err.status, err.text || err.message].filter(Boolean).join(': ');
+      }
+      if(!detail) detail = JSON.stringify(err);
+    }catch(e2){ detail = String(err); }
+    console.error('EmailJS send failed:', detail, err);
+    toast('שליחה נכשלה — ' + (detail || 'שגיאה לא ידועה') + '. הטיוטה נשמרה בכרטיס ההוראה.');
+  }
+}
+
+async function copyDraftToClipboard(ins){
+  const draft = ins.emailDraft;
+  if(!draft) return;
+  const text = 'אל: ' + draft.to + '\nנושא: ' + draft.subject + '\n\n' + draft.body;
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      await navigator.clipboard.writeText(text);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    toast('הטיוטה הועתקה — הדביקו במייל החדש שלכם ולחצו שליחה');
+  }catch(e){
+    toast('לא ניתן היה להעתיק אוטומטית — יש לסמן ולהעתיק ידנית מהתיבה');
+  }
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ---------------- traveler card ---------------- */
+function renderTravelerCard(ins, roleFocus){
+  const os = overallStatus(ins);
+  const isOpen = state.openId === ins.id;
+  return `
+  <div class="traveler" data-id="${ins.id}">
+    <div class="traveler-head" data-toggle="${ins.id}">
+      <div>
+        <div class="idline mono">הוראה ${ins.orderNumber || 'ללא מס׳'}</div>
+        <div class="machine mono">מכונה: ${ins.machineNumber || '—'}${ins.machineStartDate ? ' · תאריך עלייה: ' + escapeHtml(ins.machineStartDate) : ''}${ins.machineStartTime ? ' · שעת עלייה: ' + escapeHtml(ins.machineStartTime) : ''}</div>
+        <div class="meta">נרשם ע"י ${ins.createdBy || '—'} · ${fmtDate(ins.createdAt)}</div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+        <span class="overall-tag ${os}">${overallLabel(os)}</span>
+        <div class="stamps">
+          <div class="${stampClass(ins.prep)}">${stampText('prep', ins.prep)}</div>
+          <div class="${stampClass(ins.grinding)}">${stampText('grinding', ins.grinding)}</div>
+          <div class="${stampClass(ins.measurement)}">${stampText('measurement', ins.measurement)}</div>
+          <div class="${stampClass(ins.catalog)}">${stampText('catalog', ins.catalog)}</div>
+          <div class="${stampClass(ins.final, true)}">${stampText('final', ins.final)}</div>
+        </div>
+        ${ins.shelfStatus === 'vacated'
+          ? `<span class="overall-tag pending">פונתה מהמדף</span>`
+          : `<button class="btn btn-ghost btn-small" data-action="vacate" data-ins="${ins.id}" data-noToggle="1">הוראה פונתה מהמדף</button>`}
+      </div>
+    </div>
+    <div class="traveler-body ${isOpen ? 'open' : ''}">
+      ${ins.plannerNote ? `<div class="planner-note">${escapeHtml(ins.plannerNote)}</div>` : ''}
+      ${renderShelfBlock(ins)}
+      ${renderEmailDraftBlock(ins)}
+      ${renderRoleBlock(ins, 'prep', roleFocus)}
+      ${renderRoleBlock(ins, 'grinding', roleFocus)}
+      ${renderRoleBlock(ins, 'measurement', roleFocus)}
+      ${renderRoleBlock(ins, 'catalog', roleFocus)}
+      ${renderFinalBlock(ins, roleFocus === 'final')}
+    </div>
+  </div>`;
+}
+
+function renderShelfBlock(ins){
+  if(ins.shelfStatus === 'vacated'){
+    return `
+    <div class="role-block" style="background:#F1EDE0;">
+      <h4><span>סטטוס מדף</span><span class="overall-tag pending">פונתה מהמדף</span></h4>
+      <div class="role-log">פונתה ע"י ${ins.vacatedBy || '—'} · ${ins.vacatedAt ? fmtDate(ins.vacatedAt) : ''}</div>
+    </div>`;
+  }
+  return '';
+}
+
+function renderEmailDraftBlock(ins){
+  if(!ins.emailDraft) return '';
+  const d = ins.emailDraft;
+  return `
+  <div class="role-block" style="background:#F5F3EA;">
+    <h4><span>תוכן המייל שנשלח (גיבוי לעיון)</span>
+      <button class="btn btn-primary btn-small" data-action="copydraft" data-ins="${ins.id}">העתק</button>
+    </h4>
+    <div style="font-size:12.5px; color:var(--ink-soft); line-height:1.6;">
+      <div><strong>אל:</strong> ${escapeHtml(d.to || '—')}</div>
+      <div><strong>נושא:</strong> ${escapeHtml(d.subject)}</div>
+      <div style="white-space:pre-wrap; margin-top:4px;">${escapeHtml(d.body)}</div>
+    </div>
+  </div>`;
+}
+
+function renderRoleBlock(ins, roleKey, roleFocus){
+  const rs = ins[roleKey];
+  const editable = roleFocus === roleKey;
+  const checks = ROLE_CHECKS[roleKey];
+  const statusTag = rs.status === 'approved'
+    ? `<span class="overall-tag" style="background:var(--green-bg);color:var(--green);">חתום ✓</span>`
+    : rs.status === 'issue'
+      ? `<span class="overall-tag issue">בעיה דווחה</span>`
+      : `<span class="overall-tag pending">ממתין</span>`;
+
+  let checksHtml = checks.map(c => `
+    <label class="check-row">
+      <input type="checkbox" ${editable ? '' : 'disabled'} data-ins="${ins.id}" data-role="${roleKey}" data-check="${c.key}" ${rs.checks[c.key] ? 'checked' : ''}>
+      <span>${c.text}</span>
+    </label>`).join('');
+
+  let actionsHtml = '';
+  if(editable && rs.status !== 'approved'){
+    const allChecked = checks.every(c => rs.checks[c.key]);
+    actionsHtml = `
+      <div class="role-actions">
+        <button class="btn btn-green" data-action="approve" data-ins="${ins.id}" data-role="${roleKey}" ${allChecked ? '' : 'disabled'}>חתום ואשר</button>
+        <button class="btn btn-red" data-action="issue" data-ins="${ins.id}" data-role="${roleKey}">דווח בעיה</button>
+      </div>
+      <div id="issuebox_${ins.id}_${roleKey}" style="display:none; margin-top:8px;">
+        <textarea placeholder="פירוט הבעיה שנמצאה..." data-issuetext="${ins.id}_${roleKey}"></textarea>
+        <button class="btn btn-red btn-small" style="margin-top:6px;" data-action="submitissue" data-ins="${ins.id}" data-role="${roleKey}">שלח דיווח בעיה</button>
+      </div>
+    `;
+  } else if (editable && rs.status === 'approved') {
+    actionsHtml = `<div class="role-actions"><button class="btn btn-ghost btn-small" data-action="reopen" data-ins="${ins.id}" data-role="${roleKey}">בטל אישור ופתח מחדש</button></div>`;
+  }
+
+  let logHtml = '';
+  if(rs.status !== 'pending'){
+    logHtml = `<div class="role-log">${rs.status === 'approved' ? 'אושר' : 'דווחה בעיה'} ע"י ${rs.by || '—'} · ${rs.at ? fmtDate(rs.at) : ''}</div>`;
+    if(rs.status === 'issue' && rs.comment){
+      logHtml += `<div class="issue-note">⚠ ${escapeHtml(rs.comment)}</div>`;
+    }
+  }
+
+  return `
+  <div class="role-block">
+    <h4><span>${ROLE_LABELS[roleKey]}</span>${statusTag}</h4>
+    ${checksHtml}
+    ${actionsHtml}
+    ${logHtml}
+  </div>`;
+}
+
+function renderFinalBlock(ins, editable){
+  const rs = ins.final;
+  const subs = SUB_ROLE_ORDER.map(r => ({ key:r, status: ins[r].status }));
+  const allApproved = subs.every(s => s.status === 'approved');
+
+  const summaryHtml = `<div class="final-summary">${subs.map(s => `
+    <span class="item"><span class="dot ${s.status}"></span>${ROLE_LABELS[s.key]}</span>`).join('')}</div>`;
+
+  const statusTag = rs.status === 'approved'
+    ? `<span class="overall-tag" style="background:var(--final-green-bg);color:var(--final-green);">אושר סופית ✓</span>`
+    : rs.status === 'issue'
+      ? `<span class="overall-tag issue">בעיה דווחה</span>`
+      : `<span class="overall-tag pending">ממתין</span>`;
+
+  let actionsHtml = '';
+  if(editable && rs.status !== 'approved'){
+    actionsHtml = `
+      <div class="role-actions">
+        <button class="btn btn-gold" data-action="finalapprove" data-ins="${ins.id}" ${allApproved ? '' : 'disabled'}>אישור סופי</button>
+        <button class="btn btn-red" data-action="finalissue" data-ins="${ins.id}">דווח בעיה</button>
+      </div>
+      ${!allApproved ? `<div class="final-gate-note">ניתן לאשר סופית רק לאחר שכל ארבעת הגורמים חתמו ואישרו.</div>` : ''}
+      <div id="finalissuebox_${ins.id}" style="display:none; margin-top:8px;">
+        <textarea placeholder="פירוט הבעיה שנמצאה..." data-finalissuetext="${ins.id}"></textarea>
+        <button class="btn btn-red btn-small" style="margin-top:6px;" data-action="submitfinalissue" data-ins="${ins.id}">שלח דיווח בעיה</button>
+      </div>
+    `;
+  } else if (editable && rs.status === 'approved') {
+    actionsHtml = `<div class="role-actions"><button class="btn btn-ghost btn-small" data-action="finalreopen" data-ins="${ins.id}">בטל אישור סופי</button></div>`;
+  }
+
+  let logHtml = '';
+  if(rs.status !== 'pending'){
+    logHtml = `<div class="role-log">${rs.status === 'approved' ? 'אושר סופית' : 'דווחה בעיה'} ע"י ${rs.by || '—'} · ${rs.at ? fmtDate(rs.at) : ''}</div>`;
+    if(rs.status === 'issue' && rs.comment){
+      logHtml += `<div class="issue-note">⚠ ${escapeHtml(rs.comment)}</div>`;
+    }
+  }
+
+  return `
+  <div class="role-block final-block">
+    <h4><span>אישור סופי — ${ROLE_LABELS.final}</span>${statusTag}</h4>
+    ${summaryHtml}
+    ${actionsHtml}
+    ${logHtml}
+  </div>`;
+}
+
+/* ---------------- role pages ---------------- */
+function renderTechRole(roleKey){
+  const pending = state.instructions.filter(ins => ins[roleKey].status === 'pending')
+    .sort((a,b)=> new Date(a.createdAt) - new Date(b.createdAt));
+  const done = state.instructions.filter(ins => ins[roleKey].status !== 'pending')
+    .sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
+
+  let formHtml = '';
+  if(roleKey === 'prep'){
+    formHtml = `
+    <div class="eyebrow">קדם ייצור // רישום הוראה</div>
+    <h2 class="section-title">רישום הוראה ומספר מכונה שהונח על המדף</h2>
+    ${renderContactsPanel()}
+    <div class="form-card">
+      <div class="grid2">
+        <div class="field"><label>מספר הוראה</label><input type="text" id="f_order" placeholder="לדוגמה: WO-4521"></div>
+        <div class="field"><label>מספר מכונה</label><input type="text" id="f_machine" placeholder="לדוגמה: מכונה 12"></div>
+        <div class="field"><label>תאריך עלייה למכונה</label><input type="date" id="f_startdate"></div>
+        <div class="field"><label>שעת עלייה למכונה</label><input type="text" id="f_starttime" placeholder="לדוגמה: 14:30"></div>
+      </div>
+      <div class="field">
+        <label>הערה (אופציונלי)</label>
+        <textarea id="f_note" placeholder="הערה חופשית להוראה, אם רלוונטי..."></textarea>
+      </div>
+      <button class="btn btn-primary" id="sendBtn">רשום ושלח אוטומטית לאנשי קשר</button>
+    </div>`;
+  }
+
+  let html = formHtml + `
+    <div class="eyebrow">${ROLE_LABELS[roleKey]} // בקרת הוראות</div>
+    <h2 class="section-title">ממתינות לבדיקה שלך (${pending.length})</h2>
+    <div class="card-list">`;
+
+  if(pending.length === 0){
+    html += `<div class="empty"><div class="big">✓</div>אין הוראות ממתינות לבדיקתך כרגע.</div>`;
+  } else {
+    pending.forEach(ins => html += renderTravelerCard(ins, roleKey));
+  }
+  html += `</div>`;
+
+  if(done.length > 0){
+    html += `<div class="eyebrow" style="margin-top:26px;">היסטוריה</div>
+    <h2 class="section-title">טופלו בעבר (${done.length})</h2>
+    <div class="card-list">`;
+    done.forEach(ins => html += renderTravelerCard(ins, roleKey));
+    html += `</div>`;
+  }
+  return html;
+}
+
+function renderMapView(){
+  let html = `
+  <div class="eyebrow">מפת מדפים // רצפת הייצור</div>
+  <h2 class="section-title">מפת תאים חיה — לפי מספרי מכונות</h2>
+  <div class="map-legend">
+    <span class="legend-item"><span class="dot-legend red"></span> תא ריק</span>
+    <span class="legend-item"><span class="dot-legend orange"></span> הוראה ממתינה לאישור סופי</span>
+    <span class="legend-item"><span class="dot-legend green"></span> הוראה אושרה סופית</span>
+  </div>
+  <div class="shelf-map">`;
+
+  SHELF_MAP.forEach((area) => {
+    html += `<div class="shelf-area"><div class="shelf-area-title">${area.title}</div><div class="shelf-grid">`;
+    area.cells.forEach(row => {
+      row.forEach(machineNum => {
+        if(machineNum === null){
+          html += `<div class="shelf-cell empty-slot"></div>`;
+        } else {
+          const slots = machineSlotStatuses(machineNum);
+          const isSelected = state.selectedMachine === String(machineNum);
+          html += `
+          <div class="shelf-cell ${isSelected ? 'selected' : ''}" data-select-machine="${machineNum}">
+            <div class="shelf-cell-number">${machineNum}</div>
+            <div class="shelf-cell-dots">
+              <span class="dot ${slots[0].color}"></span>
+              <span class="dot ${slots[1].color}"></span>
+            </div>
+          </div>`;
+        }
+      });
+    });
+    html += `</div></div>`;
+  });
+  html += `</div>`;
+
+  if(state.selectedMachine){
+    const machineInstructions = state.instructions
+      .filter(i => String(i.machineNumber).trim() === state.selectedMachine)
+      .sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
+    html += `<div class="eyebrow" style="margin-top:26px;">מכונה ${escapeHtml(state.selectedMachine)}</div>
+    <h2 class="section-title">הוראות בתא זה (${machineInstructions.length})</h2>
+    <div class="card-list">`;
+    html += machineInstructions.length === 0
+      ? `<div class="empty"><div class="big">—</div>אין הוראות רשומות למכונה זו.</div>`
+      : machineInstructions.map(ins => renderTravelerCard(ins, null)).join('');
+    html += `</div>`;
+  }
+  return html;
+}
+
+function attachMapHandlers(){
+  document.querySelectorAll('[data-select-machine]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const m = el.dataset.selectMachine;
+      state.selectedMachine = state.selectedMachine === m ? null : m;
+      render();
+    });
+  });
+}
+
+function renderFinalRole(){
+  const ready = state.instructions.filter(ins => overallStatus(ins) === 'ready-final')
+    .sort((a,b)=> new Date(a.createdAt) - new Date(b.createdAt));
+  const inProgress = state.instructions.filter(ins => ['pending'].includes(overallStatus(ins)))
+    .sort((a,b)=> new Date(a.createdAt) - new Date(b.createdAt));
+  const issues = state.instructions.filter(ins => overallStatus(ins) === 'issue')
+    .sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
+  const finalized = state.instructions.filter(ins => overallStatus(ins) === 'finalized')
+    .sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
+
+  let html = `<div class="eyebrow">${ROLE_LABELS.final} // אישור סופי</div>
+  <h2 class="section-title">ממתינות לאישור סופי (${ready.length})</h2>
+  <div class="card-list">`;
+  html += ready.length === 0
+    ? `<div class="empty"><div class="big">—</div>אין כרגע הוראות שהושלמו ע"י כל הגורמים.</div>`
+    : ready.map(ins => renderTravelerCard(ins, 'final')).join('');
+  html += `</div>`;
+
+  if(issues.length > 0){
+    html += `<div class="eyebrow" style="margin-top:26px;">בעיות פתוחות</div>
+    <h2 class="section-title">דורש טיפול (${issues.length})</h2>
+    <div class="card-list">${issues.map(ins => renderTravelerCard(ins, 'final')).join('')}</div>`;
+  }
+  if(inProgress.length > 0){
+    html += `<div class="eyebrow" style="margin-top:26px;">בתהליך</div>
+    <h2 class="section-title">עדיין בבדיקת גורמים (${inProgress.length})</h2>
+    <div class="card-list">${inProgress.map(ins => renderTravelerCard(ins, null)).join('')}</div>`;
+  }
+  if(finalized.length > 0){
+    html += `<div class="eyebrow" style="margin-top:26px;">היסטוריה</div>
+    <h2 class="section-title">אושרו סופית (${finalized.length})</h2>
+    <div class="card-list">${finalized.map(ins => renderTravelerCard(ins, 'final')).join('')}</div>`;
+  }
+  return html;
+}
+
+/* ---------------- handlers ---------------- */
+function attachDraftHandlers(){
+  document.querySelectorAll('button[data-action="copydraft"]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const ins = state.instructions.find(i=>i.id===btn.dataset.ins);
+      if(ins) copyDraftToClipboard(ins);
+    });
+  });
+  document.querySelectorAll('button[data-action="vacate"]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const ins = state.instructions.find(i=>i.id===btn.dataset.ins);
+      if(!ins) return;
+      ins.shelfStatus = 'vacated';
+      ins.vacatedBy = state.myName || '—';
+      ins.vacatedAt = new Date().toISOString();
+      await saveInstructions();
+      toast('ההוראה סומנה כפונתה מהתא — הסלוט התפנה');
+      render();
+    });
+  });
+}
+
+function attachCardToggles(){
+  document.querySelectorAll('[data-toggle]').forEach(el => {
+    el.addEventListener('click', (e)=>{
+      if(e.target.closest('button')) return;
+      const id = el.dataset.toggle;
+      state.openId = state.openId === id ? null : id;
+      render();
+    });
+  });
+}
+
+function attachPrepFormHandlers(){
+  const sendBtn = document.getElementById('sendBtn');
+  if(!sendBtn) return;
+  sendBtn.addEventListener('click', async ()=>{
+    const orderNumber = document.getElementById('f_order').value.trim();
+    const machineNumber = document.getElementById('f_machine').value.trim();
+    const machineStartDate = document.getElementById('f_startdate').value.trim();
+    const machineStartTime = document.getElementById('f_starttime').value.trim();
+    const plannerNote = document.getElementById('f_note').value.trim();
+
+    if(!orderNumber || !machineNumber){
+      toast('נא להזין מספר הוראה ומספר מכונה');
+      return;
+    }
+    const existingActive = activeInstructionsForMachine(machineNumber);
+    if(existingActive.length >= 2){
+      toast('התא של מכונה ' + machineNumber + ' מלא (2/2) — יש לפנות הוראה קיימת ("הוראה פונתה מהתא") לפני רישום הוראה נוספת');
+      return;
+    }
+    const createdBy = state.myName || 'קדם ייצור';
+    const ins = newInstructionSkeleton({orderNumber, machineNumber, machineStartDate, machineStartTime, plannerNote, createdBy});
+    ins.emailDraft = buildEmailDraft(ins);
+    state.instructions.push(ins);
+    sendBtn.disabled = true;
+    await saveInstructions();
+    sendBtn.disabled = false;
+    document.getElementById('f_order').value = '';
+    document.getElementById('f_machine').value = '';
+    document.getElementById('f_startdate').value = '';
+    document.getElementById('f_starttime').value = '';
+    document.getElementById('f_note').value = '';
+    state.openId = ins.id;
+    await sendRegistrationEmail(ins);
+    render();
+  });
+}
+
+function attachTechHandlers(roleKey){
+  if(roleKey === 'final') return;
+  document.querySelectorAll(`input[type=checkbox][data-role="${roleKey}"]`).forEach(cb => {
+    cb.addEventListener('change', async ()=>{
+      const ins = state.instructions.find(i => i.id === cb.dataset.ins);
+      if(!ins) return;
+      ins[roleKey].checks[cb.dataset.check] = cb.checked;
+      await saveInstructions();
+      render();
+    });
+  });
+
+  document.querySelectorAll(`button[data-action="approve"][data-role="${roleKey}"]`).forEach(btn => {
+    btn.addEventListener('click', async ()=>{
+      const ins = state.instructions.find(i => i.id === btn.dataset.ins);
+      if(!ins) return;
+      ins[roleKey].status = 'approved';
+      ins[roleKey].by = state.myName || ROLE_LABELS[roleKey];
+      ins[roleKey].at = new Date().toISOString();
+      ins[roleKey].comment = '';
+      await saveInstructions();
+      toast('נחתם ואושר');
+      render();
+    });
+  });
+
+  document.querySelectorAll(`button[data-action="issue"][data-role="${roleKey}"]`).forEach(btn => {
+    btn.addEventListener('click', ()=>{
+      const box = document.getElementById(`issuebox_${btn.dataset.ins}_${roleKey}`);
+      if(box) box.style.display = 'block';
+    });
+  });
+
+  document.querySelectorAll(`button[data-action="submitissue"][data-role="${roleKey}"]`).forEach(btn => {
+    btn.addEventListener('click', async ()=>{
+      const insId = btn.dataset.ins;
+      const ta = document.querySelector(`[data-issuetext="${insId}_${roleKey}"]`);
+      const text = ta ? ta.value.trim() : '';
+      if(!text){ toast('נא לפרט את הבעיה'); return; }
+      const ins = state.instructions.find(i => i.id === insId);
+      if(!ins) return;
+      ins[roleKey].status = 'issue';
+      ins[roleKey].by = state.myName || ROLE_LABELS[roleKey];
+      ins[roleKey].at = new Date().toISOString();
+      ins[roleKey].comment = text;
+      await saveInstructions();
+      toast('דיווח הבעיה נשלח');
+      render();
+    });
+  });
+
+  document.querySelectorAll(`button[data-action="reopen"][data-role="${roleKey}"]`).forEach(btn => {
+    btn.addEventListener('click', async ()=>{
+      const ins = state.instructions.find(i => i.id === btn.dataset.ins);
+      if(!ins) return;
+      ins[roleKey].status = 'pending';
+      ins[roleKey].comment = '';
+      await saveInstructions();
+      render();
+    });
+  });
+}
+
+function attachFinalHandlers(){
+  document.querySelectorAll('button[data-action="finalapprove"]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const ins = state.instructions.find(i=>i.id===btn.dataset.ins);
+      if(!ins) return;
+      ins.final.status = 'approved';
+      ins.final.by = state.myName || ROLE_LABELS.final;
+      ins.final.at = new Date().toISOString();
+      ins.final.comment = '';
+      await saveInstructions();
+      toast('ההוראה אושרה סופית');
+      render();
+    });
+  });
+  document.querySelectorAll('button[data-action="finalissue"]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const box = document.getElementById(`finalissuebox_${btn.dataset.ins}`);
+      if(box) box.style.display = 'block';
+    });
+  });
+  document.querySelectorAll('button[data-action="submitfinalissue"]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const insId = btn.dataset.ins;
+      const ta = document.querySelector(`[data-finalissuetext="${insId}"]`);
+      const text = ta ? ta.value.trim() : '';
+      if(!text){ toast('נא לפרט את הבעיה'); return; }
+      const ins = state.instructions.find(i=>i.id===insId);
+      if(!ins) return;
+      ins.final.status = 'issue';
+      ins.final.by = state.myName || ROLE_LABELS.final;
+      ins.final.at = new Date().toISOString();
+      ins.final.comment = text;
+      await saveInstructions();
+      toast('דיווח הבעיה נשלח');
+      render();
+    });
+  });
+  document.querySelectorAll('button[data-action="finalreopen"]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const ins = state.instructions.find(i=>i.id===btn.dataset.ins);
+      if(!ins) return;
+      ins.final.status = 'pending';
+      ins.final.comment = '';
+      await saveInstructions();
+      render();
+    });
+  });
+}
+
+attachNotifHandlers();
+loadData();
+</script>
+</body>
+</html>
